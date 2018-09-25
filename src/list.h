@@ -4,12 +4,12 @@
 #include <switch.h>
 
 typedef struct roms{
-    char name[FS_MAX_PATH];
+    char name[256];
     struct roms* next;
 } roms;
 
-roms* createListEntry(char name[FS_MAX_PATH], roms* next);
-roms* appendList(roms* head, char name[FS_MAX_PATH]);
-roms* insertList(roms* head, char name[FS_MAX_PATH], roms* prev);
+roms* createListEntry(char *name, roms* next);
+roms* appendList(roms* head, char *name);
+roms* insertList(roms* head, char *name, roms* prev);
 
 #endif /* LIST_H */

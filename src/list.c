@@ -6,21 +6,23 @@
 #include "error.h"
 #include "list.h"
 
-roms* createListEntry(char name[FS_MAX_PATH], roms* next)
+roms* createListEntry(char *name, roms* next)
 {
     roms *new_rom = (roms*)malloc(sizeof(roms));
     if(new_rom == NULL)
     {
         printError("Failed to allocate memory. Press any button to exit.");
     }
-    strncpy(new_rom->name, name, sizeof(&name));
-    strcat(new_rom->name, "\0");
+    if(strlen(name) < 256)
+        strcpy(new_rom->name, name);
+    else
+        memmove(new_rom->name, name, 256);
     new_rom->next = next;
 
     return new_rom;
 }
 
-roms* appendList(roms* head, char name[FS_MAX_PATH])
+roms* appendList(roms* head, char *name)
 {
     roms *cursor = head;
     while(cursor->next != NULL)
@@ -32,7 +34,7 @@ roms* appendList(roms* head, char name[FS_MAX_PATH])
     return head;
 }
 
-roms* insertList(roms* head, char name[FS_MAX_PATH], roms* prev)
+roms* insertList(roms* head, char *name, roms* prev)
 {
     roms *cursor = head;
     while(cursor != prev)

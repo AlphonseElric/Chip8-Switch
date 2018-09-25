@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
 #include <switch.h>
@@ -15,8 +16,6 @@ void listRoms(roms* head)
         printf("%s\n", current->name);
         current = current->next;
     }
-    current = current->next;
-    printf("%s\n", current->name);
 }
 
 roms* getRoms(DIR* directory)
@@ -34,16 +33,16 @@ roms* getRoms(DIR* directory)
         }
         else if(entry->d_type == DT_DIR)
         {
-            char* dirName = "\0";
-            if(sizeof(&entry->d_name) < 50)
+            char* dirName = (char*)malloc(256);
+            if(strlen(entry->d_name) < 50)
             {
                 strcpy(dirName, entry->d_name);
                 strcat(dirName, "/");
             }
             else
             {
-                memmove(dirName, entry->d_name, 47);
-                strcat(dirName, "../");
+                memmove(dirName, entry->d_name, 45);
+                strcat(dirName, ".../");
             }
 
             if(currentDir != NULL)
@@ -53,6 +52,8 @@ roms* getRoms(DIR* directory)
             currentDir = backButton;
         }
     }
+    
+    appendList(backButton, "end");
 
     return backButton;
 }

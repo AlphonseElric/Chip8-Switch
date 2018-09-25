@@ -23,5 +23,7 @@ int main(int argc, char const *argv[])
         gfxFlushBuffers();
         gfxSwapBuffers();
     }
+
+    gfxExit();
     return 0;
 }
