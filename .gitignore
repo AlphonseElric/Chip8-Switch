@@ -1,0 +1,10 @@
+#Switch outputs
+*.elf
+*.nacp
+*.nro
+*.nso
+*.pfs0
+
+#Folders
+build
+.vscode
