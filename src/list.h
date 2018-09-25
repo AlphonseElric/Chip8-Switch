@@ -9,7 +9,7 @@ typedef struct roms{
 } roms;
 
 roms* createListEntry(char name[FS_MAX_PATH], roms* next);
-void appendList(roms* head, char name[FS_MAX_PATH]);
-void insertList(roms* head, char name[FS_MAX_PATH], roms* prev);
+roms* appendList(roms* head, char name[FS_MAX_PATH]);
+roms* insertList(roms* head, char name[FS_MAX_PATH], roms* prev);
 
 #endif /* LIST_H */

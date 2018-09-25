@@ -13,23 +13,26 @@ roms* createListEntry(char name[FS_MAX_PATH], roms* next)
     {
         printError("Failed to allocate memory. Press any button to exit.");
     }
-    strncpy(new_rom->name, name, strlen(name));
+    strncpy(new_rom->name, name, sizeof(&name));
+    strcat(new_rom->name, "\0");
     new_rom->next = next;
 
     return new_rom;
 }
 
-void appendList(roms* head, char name[FS_MAX_PATH])
+roms* appendList(roms* head, char name[FS_MAX_PATH])
 {
     roms *cursor = head;
     while(cursor->next != NULL)
         cursor = cursor->next;
     
     roms *new_rom = createListEntry(name, NULL);
-    cursor-> next = new_rom;
+    cursor->next = new_rom;
+
+    return head;
 }
 
-void insertList(roms* head, char name[FS_MAX_PATH], roms* prev)
+roms* insertList(roms* head, char name[FS_MAX_PATH], roms* prev)
 {
     roms *cursor = head;
     while(cursor != prev)
@@ -39,5 +42,10 @@ void insertList(roms* head, char name[FS_MAX_PATH], roms* prev)
     {
         roms *new_rom = createListEntry(name, cursor->next);
         cursor->next = new_rom;
+        return head;
+    }
+    else
+    {
+        return NULL;
     }
 }

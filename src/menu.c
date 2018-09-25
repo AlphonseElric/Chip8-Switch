@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include <switch.h>
 
 #include "list.h"
@@ -11,35 +12,45 @@ void listRoms(roms* head)
     roms* current = head;
     while(current->next != NULL)
     {
-        printf("%s", current->name);
+        printf("%s\n", current->name);
         current = current->next;
     }
     current = current->next;
-    printf("%s", current->name);
+    printf("%s\n", current->name);
 }
 
-roms* getRoms(FsDir* directory)
+roms* getRoms(DIR* directory)
 {
-    FsDirectoryEntry* entry;
+    struct dirent* entry;
 
     roms *backButton = createListEntry("..", NULL);
-    roms *currentDir;
+    roms *currentDir = NULL;
     
-    while(entry = readdir(directory))
+    while((entry = readdir(directory)))
     {
-        if(strstr(entry->name, ".ch8") != NULL || strstr(entry->name, ".bin") != NULL || strstr(entry->name, ".rom") != NULL)
+        if(strstr(entry->d_name, ".ch8") != NULL || strstr(entry->d_name, ".bin") != NULL || strstr(entry->d_name, ".rom") != NULL)
         {
-            appendList(backButton, entry->name);
+            backButton = appendList(backButton, entry->d_name);
         }
-        else if(entry->type == 0)
+        else if(entry->d_type == DT_DIR)
         {
-            char* dirName;
-            strcpy(dirName, entry->name);
-            strcat(dirName, '/');
-            if(currentDir != NULL)
-                insertList(backButton, dirName, currentDir);
+            char* dirName = "\0";
+            if(sizeof(&entry->d_name) < 50)
+            {
+                strcpy(dirName, entry->d_name);
+                strcat(dirName, "/");
+            }
             else
-                insertList(backButton, dirName, backButton);
+            {
+                memmove(dirName, entry->d_name, 47);
+                strcat(dirName, "../");
+            }
+
+            if(currentDir != NULL)
+                backButton = insertList(backButton, dirName, currentDir);
+            else
+                backButton = insertList(backButton, dirName, backButton);
+            currentDir = backButton;
         }
     }
 
@@ -48,7 +59,7 @@ roms* getRoms(FsDir* directory)
 
 void initRomList()
 {
-    FsDir* directory = opendir("/");
+    DIR* directory = opendir("/");
     if(directory == NULL)
     {
         printError("Failed to open SD card. Press any button to exit.");
