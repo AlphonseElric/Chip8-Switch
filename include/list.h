@@ -12,4 +12,5 @@ roms* createListEntry(char *name, roms* next);
 roms* appendList(roms* head, char *name);
 roms* insertList(roms* head, char *name, roms* prev);
 
+int listLength(roms* head);
 #endif /* LIST_H */

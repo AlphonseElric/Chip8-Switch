@@ -2,13 +2,11 @@
 #include <switch.h>
 
 #include "menu.h"
+#include "error.h"
 
 int main(int argc, char const *argv[])
 {
-    gfxInitDefault();
     consoleInit(NULL);
-
-    printf("CHIP-8 EMULATOR by AlphonseElric\n\nPlease select a ROM:\n\n");
 
     initRomList();
 
@@ -19,11 +17,15 @@ int main(int argc, char const *argv[])
 
         if(keyDown & KEY_PLUS)
             break;
-
-        gfxFlushBuffers();
-        gfxSwapBuffers();
+        else if(keyDown & KEY_DUP)
+            updateSelection(0);
+        else if(keyDown & KEY_DDOWN)
+            updateSelection(1);
+        else if (keyDown & KEY_A)
+            updateList();
+        consoleUpdate(NULL);
     }
 
-    gfxExit();
+    consoleExit(NULL);
     return 0;
 }
