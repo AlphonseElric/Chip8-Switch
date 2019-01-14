@@ -30,13 +30,15 @@ include $(DEVKITPRO)/libnx/switch_rules
 #     - icon.jpg
 #     - <libnx folder>/default_icon.jpg
 #---------------------------------------------------------------------------------
-TARGET		:=	Chip8
-BUILD		:=	build
-SOURCES		:=	src
-DATA		:=	data
-INCLUDES	:=	include
-EXEFS_SRC	:=	exefs_src
-#ROMFS	:=	romfs
+TARGET		  := Chip8
+BUILD		    := build
+SOURCES		  := src
+DATA		    := data
+INCLUDES	  := include
+EXEFS_SRC   := exefs
+APP_TITLE   := CHIP8-Switch
+APP_AUTHOR  := AlphonseElric
+APP_VERSION := 1.0.0
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -191,4 +193,3 @@ $(OFILES_SRC)	: $(HFILES_BIN)
 #---------------------------------------------------------------------------------------
 endif
 #---------------------------------------------------------------------------------------
- 

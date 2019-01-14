@@ -27,7 +27,7 @@ roms* appendList(roms* head, char *name)
     roms *cursor = head;
     while(cursor->next != NULL)
         cursor = cursor->next;
-    
+
     roms *new_rom = createListEntry(name, NULL);
     cursor->next = new_rom;
 
@@ -50,4 +50,16 @@ roms* insertList(roms* head, char *name, roms* prev)
     {
         return NULL;
     }
+}
+
+int listLength(roms *head)
+{
+    roms *cursor = head;
+    int length = 0;
+    while (cursor->next != NULL) {
+        length++;
+        cursor = cursor->next;
+    }
+
+    return length;
 }
